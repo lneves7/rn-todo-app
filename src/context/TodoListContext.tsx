@@ -1,6 +1,6 @@
-import { createContext, FC, useCallback, useMemo, useState } from "react";
-import { Todo } from "../types";
-import { nanoid } from "nanoid/non-secure";
+import { createContext, FC, useCallback, useMemo, useState } from 'react';
+import { nanoid } from 'nanoid/non-secure';
+import { Todo } from '../types';
 
 interface TodoListContextProps {
   todos: Todo[];
@@ -19,12 +19,16 @@ export const TodoListContextProvider: FC<any> = ({ children }) => {
   const [dataSource, setDataSource] = useState<Todo[]>([]);
 
   const todos = useMemo(() => {
-    return dataSource.filter(({ completedAt }) => completedAt === null);
+    const incomplete = dataSource.filter(({ completedAt }) => completedAt === null);
+    const importantTodos = incomplete.filter((todo) => todo.important);
+    const nonImportantTodos = incomplete.filter((todo) => !todo.important);
+    return [...importantTodos, ...nonImportantTodos];
   }, [dataSource]);
 
-  const completedTodos = useMemo(() => {
-    return dataSource.filter(({ completedAt }) => completedAt !== null);
-  }, [dataSource]);
+  const completedTodos = useMemo(
+    () => dataSource.filter(({ completedAt }) => completedAt !== null),
+    [dataSource]
+  );
 
   const addTodo = useCallback(
     (description: string, important: boolean) => {
@@ -34,23 +38,19 @@ export const TodoListContextProvider: FC<any> = ({ children }) => {
         important,
         completedAt: null,
       } as Todo;
-
-      setDataSource((prevDataSource) => [...prevDataSource, data]);
+      setDataSource((prevDataSource) => [data, ...prevDataSource]);
     },
     [dataSource]
   );
 
-  return (
-    <TodoListContext.Provider
-      value={{
-        todos,
-        completedTodos,
-        addTodo,
-        // completeTodo,
-        // removeTodo,
-      }}
-    >
-      {children}
-    </TodoListContext.Provider>
+  const providerValue = useMemo(
+    () => ({
+      todos,
+      completedTodos,
+      addTodo,
+    }),
+    [todos, completedTodos, addTodo]
   );
+
+  return <TodoListContext.Provider value={providerValue}>{children}</TodoListContext.Provider>;
 };

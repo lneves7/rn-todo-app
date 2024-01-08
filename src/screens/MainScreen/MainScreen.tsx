@@ -1,30 +1,24 @@
-import { useContext, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { View, Text } from "react-native";
-import { TodoListContext } from "../../context";
-import { styles } from "./styles";
+/* eslint-disable react/style-prop-object */
+import { useContext } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { View, Text } from 'react-native';
+import { TodoListContext } from '../../context';
+import { styles } from './styles';
+import { AddTodoForm } from '../../components';
 
 const MainScreen: React.FC = () => {
-  const { todos, completedTodos, addTodo } = useContext(TodoListContext);
-
-  useEffect(() => {
-    addTodo("Teste 1", false);
-    addTodo("Teste 2", false);
-    addTodo("Teste 3", false);
-    addTodo("Teste 4", true);
-  }, []);
+  const { todos } = useContext(TodoListContext);
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      {todos.map(({ id, description, important }) => {
-        return (
-          <View>
-            <Text>Id: {id}</Text>
-            <Text>{description}</Text>
-          </View>
-        );
-      })}
+      <AddTodoForm />
+      {todos.map(({ id, description }) => (
+        <View key={id}>
+          <Text>Id: {id}</Text>
+          <Text>{description}</Text>
+        </View>
+      ))}
     </View>
   );
 };
