@@ -43,11 +43,36 @@ export const TodoListContextProvider: FC<any> = ({ children }) => {
     [dataSource]
   );
 
+  const removeTodo = useCallback(
+    (todoId: string) => {
+      const filteredDataSource = dataSource.filter(({ id }) => id !== todoId);
+      setDataSource(filteredDataSource);
+    },
+    [dataSource]
+  );
+
+  const completeTodo = useCallback(
+    (todoId: string) => {
+      const updatedDataSource = dataSource.map((ds) => {
+        const { id } = ds;
+        const auxObj = Object.assign(ds);
+        if (id === todoId) {
+          auxObj.completedAt = new Date().toISOString();
+        }
+        return auxObj;
+      });
+      setDataSource(updatedDataSource);
+    },
+    [dataSource]
+  );
+
   const providerValue = useMemo(
     () => ({
       todos,
       completedTodos,
       addTodo,
+      completeTodo,
+      removeTodo,
     }),
     [todos, completedTodos, addTodo]
   );

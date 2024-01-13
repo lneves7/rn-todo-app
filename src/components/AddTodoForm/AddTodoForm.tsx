@@ -21,7 +21,7 @@ const AddTodoForm: React.FC = () => {
         style={styles.input}
         value={todoDescription}
         onChangeText={(v) => setTodoDescription(v)}
-        onSubmitEditing={() => handleFormSubmit()}
+        onSubmitEditing={handleFormSubmit}
         autoFocus
       />
       <Switch value={toggleImportant} onValueChange={(v) => setToggleImportant(v)} />
