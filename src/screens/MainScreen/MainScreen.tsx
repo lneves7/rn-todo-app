@@ -11,7 +11,7 @@ const MainScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="light" backgroundColor="#27B087" />
       <AddTodoForm />
       {todos.map(({ id, description }) => (
         <View key={id}>

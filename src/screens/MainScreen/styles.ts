@@ -1,9 +1,11 @@
 import { StyleSheet, StatusBar } from "react-native";
+import { COLORS } from "../../constants";
 
 export const styles = StyleSheet.create({
   container: {
-    paddingTop: StatusBar.currentHeight + 8,
+    marginTop: StatusBar.currentHeight + 4,
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.secondary,
+    padding: 28
   },
 });

@@ -35,5 +35,7 @@ module.exports = {
     'no-restricted-exports': 'off',
     'import/prefer-default-export': 'off',
     'no-return-assign': 'off',
+    'no-debugger': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };
